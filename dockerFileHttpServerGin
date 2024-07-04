@@ -3,5 +3,9 @@ WORKDIR /src
 COPY . .
 
 RUN go mod tidy
-RUN go build -o /httpServerGin ./home/ryad/DateTime-Server-Mohamed-Riyad/httpServerGin/httpServerGin.go
-ENTRYPOINT [ "/httpServerGin" ]
+RUN go build -o /httpservergin ./httpServerGin/httpServerGin.go
+
+FROM alpine:3.16
+WORKDIR /app
+COPY --from=builder //httpservergin /app
+ENTRYPOINT [ "/httpservergin" ]

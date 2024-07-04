@@ -1,0 +1,19 @@
+
+format:
+	go fmt ./...
+
+lint:
+	golangci-lint run
+
+build:
+	go build -o httpServerGin ./httpServerGin/httpServerGin.go
+	go build -o httpServer ./httpServer/httpServer.go
+
+docker-build:
+	docker-compose -f docker-compose.yml build
+
+run:
+	docker-compose -f docker-compose.yml up
+
+clean:
+	rm -f httpServerGin httpServer
