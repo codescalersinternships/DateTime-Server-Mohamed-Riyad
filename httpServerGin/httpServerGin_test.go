@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 	"time"
 )
@@ -23,10 +22,11 @@ func Test_GetDateTime(t *testing.T) {
 		json.NewDecoder(response.Body).Decode(&responseJSON)
 		responseTimeStr, _ := responseJSON["datetime"]
 		responseTime, _ := time.Parse(time.RFC3339, responseTimeStr)
-		got := strings.Split(responseTime.String(), " ")[0]
-		want := strings.Split(time.Now().String(), " ")[0]
 
-		if got != want {
+		got := responseTime.Round(time.Minute)
+		want := time.Now().Round(time.Minute)
+
+		if !got.Equal(want) {
 			t.Errorf("got: %v, wanted: %v", got, want)
 		}
 	})

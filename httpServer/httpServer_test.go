@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 	"time"
 )
@@ -18,10 +17,10 @@ func Test_GetDateTime(t *testing.T) {
 		var responseTime time.Time
 		json.NewDecoder(response.Body).Decode(&responseTime)
 
-		got := strings.Split(responseTime.String(), " ")[0]
-		want := strings.Split(time.Now().String(), " ")[0]
+		got := responseTime.Round(time.Minute)
+		want := time.Now().Round(time.Minute)
 
-		if got != want {
+		if !got.Equal(want) {
 			t.Errorf("got: %v, wanted: %v", got, want)
 		}
 	})
